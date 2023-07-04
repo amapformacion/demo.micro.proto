@@ -4,7 +4,7 @@
 // - protoc             v4.23.3
 // source: emis/v1/emis.proto
 
-package emis
+package v1
 
 import (
 	context "context"
@@ -38,7 +38,7 @@ func NewEmisServiceClient(cc grpc.ClientConnInterface) EmisServiceClient {
 
 func (c *emisServiceClient) GetEmision(ctx context.Context, in *GetEmisionRequest, opts ...grpc.CallOption) (*GetEmisionResponse, error) {
 	out := new(GetEmisionResponse)
-	err := c.cc.Invoke(ctx, "/EmisService/GetEmision", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/emis.EmisService/GetEmision", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +47,7 @@ func (c *emisServiceClient) GetEmision(ctx context.Context, in *GetEmisionReques
 
 func (c *emisServiceClient) AddEmision(ctx context.Context, in *AddEmisionRequest, opts ...grpc.CallOption) (*AddEmisionResponse, error) {
 	out := new(AddEmisionResponse)
-	err := c.cc.Invoke(ctx, "/EmisService/AddEmision", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/emis.EmisService/AddEmision", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -56,7 +56,7 @@ func (c *emisServiceClient) AddEmision(ctx context.Context, in *AddEmisionReques
 
 func (c *emisServiceClient) DeleteEmision(ctx context.Context, in *DeleteEmisionRequest, opts ...grpc.CallOption) (*DeleteEmisionResponse, error) {
 	out := new(DeleteEmisionResponse)
-	err := c.cc.Invoke(ctx, "/EmisService/DeleteEmision", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/emis.EmisService/DeleteEmision", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -110,7 +110,7 @@ func _EmisService_GetEmision_Handler(srv interface{}, ctx context.Context, dec f
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/EmisService/GetEmision",
+		FullMethod: "/emis.EmisService/GetEmision",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(EmisServiceServer).GetEmision(ctx, req.(*GetEmisionRequest))
@@ -128,7 +128,7 @@ func _EmisService_AddEmision_Handler(srv interface{}, ctx context.Context, dec f
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/EmisService/AddEmision",
+		FullMethod: "/emis.EmisService/AddEmision",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(EmisServiceServer).AddEmision(ctx, req.(*AddEmisionRequest))
@@ -146,7 +146,7 @@ func _EmisService_DeleteEmision_Handler(srv interface{}, ctx context.Context, de
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/EmisService/DeleteEmision",
+		FullMethod: "/emis.EmisService/DeleteEmision",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(EmisServiceServer).DeleteEmision(ctx, req.(*DeleteEmisionRequest))
@@ -158,7 +158,7 @@ func _EmisService_DeleteEmision_Handler(srv interface{}, ctx context.Context, de
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var EmisService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "EmisService",
+	ServiceName: "emis.EmisService",
 	HandlerType: (*EmisServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
