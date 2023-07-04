@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+option go_package = "./emis";
+
+
+
+message Emision {
+  string codigo = 1;
+  string organismo = 2;
+  int32  total = 3;
+}
+
+service EmisService {
+  
+  // Definimos endpoints
+  rpc GetEmision(GetEmisionRequest) returns (GetEmisionResponse);
+  rpc AddEmision(AddEmisionRequest) returns (AddEmisionResponse);
+  rpc DeleteEmision(DeleteEmisionRequest) returns (DeleteEmisionResponse);
+
+}
+
+// -- Get Emision Tipos de Mensajes --
+message GetEmisionRequest {
+  // tipo nombre posicion
+  string codigo = 1;
+}
+
+message GetEmisionResponse {
+// tipo   nombre    posicion
+  Emision emision = 1;
+}
+
+// -- Add Emision Tipos de Mensajes --
+message AddEmisionRequest {
+  // tipo nombre posicion
+  Emision emision = 1;
+}
+
+message AddEmisionResponse {
+// tipo   nombre    posicion
+  Emision emision = 1;
+}
+
+// -- Delete Emision Tipos de Mensajes --
+message DeleteEmisionRequest {
+  // tipo nombre posicion
+  string codigo = 1;
+}
+
+message DeleteEmisionResponse {
+// tipo   nombre    posicion
+  string status = 1;
+}
