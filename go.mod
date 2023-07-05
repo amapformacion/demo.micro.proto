@@ -1,4 +1,4 @@
-module github.com/amapformacion/demo.micro.proto
+module demo.micro.proto
 
 go 1.20
 
