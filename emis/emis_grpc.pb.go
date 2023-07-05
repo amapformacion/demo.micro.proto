@@ -2,9 +2,9 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v3.6.1
-// source: emis/v1/emis.proto
+// source: emis/emis.proto
 
-package emis_v1
+package emis
 
 import (
 	context "context"
@@ -175,5 +175,5 @@ var EmisService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "emis/v1/emis.proto",
+	Metadata: "emis/emis.proto",
 }
