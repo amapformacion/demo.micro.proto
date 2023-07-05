@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 package emis;
-option go_package = "demo.micro.proto/emis/v1";
+option go_package = "./emis";
 
 
 message Emision {
