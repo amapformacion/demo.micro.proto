@@ -11,6 +11,7 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -23,9 +24,15 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type EmisServiceClient interface {
 	// Definimos endpoints
+	Ping(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	Reset(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	GetEmision(ctx context.Context, in *GetEmisionRequest, opts ...grpc.CallOption) (*GetEmisionResponse, error)
 	AddEmision(ctx context.Context, in *AddEmisionRequest, opts ...grpc.CallOption) (*AddEmisionResponse, error)
 	DeleteEmision(ctx context.Context, in *DeleteEmisionRequest, opts ...grpc.CallOption) (*DeleteEmisionResponse, error)
+	// Recibos
+	GetRecibo(ctx context.Context, in *GetReciboRequest, opts ...grpc.CallOption) (*GetReciboResponse, error)
+	AddRecibo(ctx context.Context, in *AddReciboRequest, opts ...grpc.CallOption) (*AddReciboResponse, error)
+	DeleteRecibo(ctx context.Context, in *DeleteReciboRequest, opts ...grpc.CallOption) (*DeleteReciboResponse, error)
 }
 
 type emisServiceClient struct {
@@ -36,9 +43,27 @@ func NewEmisServiceClient(cc grpc.ClientConnInterface) EmisServiceClient {
 	return &emisServiceClient{cc}
 }
 
+func (c *emisServiceClient) Ping(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, "/EmisService/Ping", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *emisServiceClient) Reset(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, "/EmisService/Reset", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *emisServiceClient) GetEmision(ctx context.Context, in *GetEmisionRequest, opts ...grpc.CallOption) (*GetEmisionResponse, error) {
 	out := new(GetEmisionResponse)
-	err := c.cc.Invoke(ctx, "/emis.EmisService/GetEmision", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/EmisService/GetEmision", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +72,7 @@ func (c *emisServiceClient) GetEmision(ctx context.Context, in *GetEmisionReques
 
 func (c *emisServiceClient) AddEmision(ctx context.Context, in *AddEmisionRequest, opts ...grpc.CallOption) (*AddEmisionResponse, error) {
 	out := new(AddEmisionResponse)
-	err := c.cc.Invoke(ctx, "/emis.EmisService/AddEmision", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/EmisService/AddEmision", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -56,7 +81,34 @@ func (c *emisServiceClient) AddEmision(ctx context.Context, in *AddEmisionReques
 
 func (c *emisServiceClient) DeleteEmision(ctx context.Context, in *DeleteEmisionRequest, opts ...grpc.CallOption) (*DeleteEmisionResponse, error) {
 	out := new(DeleteEmisionResponse)
-	err := c.cc.Invoke(ctx, "/emis.EmisService/DeleteEmision", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/EmisService/DeleteEmision", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *emisServiceClient) GetRecibo(ctx context.Context, in *GetReciboRequest, opts ...grpc.CallOption) (*GetReciboResponse, error) {
+	out := new(GetReciboResponse)
+	err := c.cc.Invoke(ctx, "/EmisService/GetRecibo", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *emisServiceClient) AddRecibo(ctx context.Context, in *AddReciboRequest, opts ...grpc.CallOption) (*AddReciboResponse, error) {
+	out := new(AddReciboResponse)
+	err := c.cc.Invoke(ctx, "/EmisService/AddRecibo", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *emisServiceClient) DeleteRecibo(ctx context.Context, in *DeleteReciboRequest, opts ...grpc.CallOption) (*DeleteReciboResponse, error) {
+	out := new(DeleteReciboResponse)
+	err := c.cc.Invoke(ctx, "/EmisService/DeleteRecibo", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -68,9 +120,15 @@ func (c *emisServiceClient) DeleteEmision(ctx context.Context, in *DeleteEmision
 // for forward compatibility
 type EmisServiceServer interface {
 	// Definimos endpoints
+	Ping(context.Context, *emptypb.Empty) (*emptypb.Empty, error)
+	Reset(context.Context, *emptypb.Empty) (*emptypb.Empty, error)
 	GetEmision(context.Context, *GetEmisionRequest) (*GetEmisionResponse, error)
 	AddEmision(context.Context, *AddEmisionRequest) (*AddEmisionResponse, error)
 	DeleteEmision(context.Context, *DeleteEmisionRequest) (*DeleteEmisionResponse, error)
+	// Recibos
+	GetRecibo(context.Context, *GetReciboRequest) (*GetReciboResponse, error)
+	AddRecibo(context.Context, *AddReciboRequest) (*AddReciboResponse, error)
+	DeleteRecibo(context.Context, *DeleteReciboRequest) (*DeleteReciboResponse, error)
 	mustEmbedUnimplementedEmisServiceServer()
 }
 
@@ -78,6 +136,12 @@ type EmisServiceServer interface {
 type UnimplementedEmisServiceServer struct {
 }
 
+func (UnimplementedEmisServiceServer) Ping(context.Context, *emptypb.Empty) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Ping not implemented")
+}
+func (UnimplementedEmisServiceServer) Reset(context.Context, *emptypb.Empty) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Reset not implemented")
+}
 func (UnimplementedEmisServiceServer) GetEmision(context.Context, *GetEmisionRequest) (*GetEmisionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetEmision not implemented")
 }
@@ -86,6 +150,15 @@ func (UnimplementedEmisServiceServer) AddEmision(context.Context, *AddEmisionReq
 }
 func (UnimplementedEmisServiceServer) DeleteEmision(context.Context, *DeleteEmisionRequest) (*DeleteEmisionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteEmision not implemented")
+}
+func (UnimplementedEmisServiceServer) GetRecibo(context.Context, *GetReciboRequest) (*GetReciboResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetRecibo not implemented")
+}
+func (UnimplementedEmisServiceServer) AddRecibo(context.Context, *AddReciboRequest) (*AddReciboResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddRecibo not implemented")
+}
+func (UnimplementedEmisServiceServer) DeleteRecibo(context.Context, *DeleteReciboRequest) (*DeleteReciboResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteRecibo not implemented")
 }
 func (UnimplementedEmisServiceServer) mustEmbedUnimplementedEmisServiceServer() {}
 
@@ -100,6 +173,42 @@ func RegisterEmisServiceServer(s grpc.ServiceRegistrar, srv EmisServiceServer) {
 	s.RegisterService(&EmisService_ServiceDesc, srv)
 }
 
+func _EmisService_Ping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EmisServiceServer).Ping(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/EmisService/Ping",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EmisServiceServer).Ping(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _EmisService_Reset_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EmisServiceServer).Reset(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/EmisService/Reset",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EmisServiceServer).Reset(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _EmisService_GetEmision_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetEmisionRequest)
 	if err := dec(in); err != nil {
@@ -110,7 +219,7 @@ func _EmisService_GetEmision_Handler(srv interface{}, ctx context.Context, dec f
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/emis.EmisService/GetEmision",
+		FullMethod: "/EmisService/GetEmision",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(EmisServiceServer).GetEmision(ctx, req.(*GetEmisionRequest))
@@ -128,7 +237,7 @@ func _EmisService_AddEmision_Handler(srv interface{}, ctx context.Context, dec f
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/emis.EmisService/AddEmision",
+		FullMethod: "/EmisService/AddEmision",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(EmisServiceServer).AddEmision(ctx, req.(*AddEmisionRequest))
@@ -146,10 +255,64 @@ func _EmisService_DeleteEmision_Handler(srv interface{}, ctx context.Context, de
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/emis.EmisService/DeleteEmision",
+		FullMethod: "/EmisService/DeleteEmision",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(EmisServiceServer).DeleteEmision(ctx, req.(*DeleteEmisionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _EmisService_GetRecibo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetReciboRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EmisServiceServer).GetRecibo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/EmisService/GetRecibo",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EmisServiceServer).GetRecibo(ctx, req.(*GetReciboRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _EmisService_AddRecibo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddReciboRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EmisServiceServer).AddRecibo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/EmisService/AddRecibo",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EmisServiceServer).AddRecibo(ctx, req.(*AddReciboRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _EmisService_DeleteRecibo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteReciboRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EmisServiceServer).DeleteRecibo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/EmisService/DeleteRecibo",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EmisServiceServer).DeleteRecibo(ctx, req.(*DeleteReciboRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -158,9 +321,17 @@ func _EmisService_DeleteEmision_Handler(srv interface{}, ctx context.Context, de
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var EmisService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "emis.EmisService",
+	ServiceName: "EmisService",
 	HandlerType: (*EmisServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Ping",
+			Handler:    _EmisService_Ping_Handler,
+		},
+		{
+			MethodName: "Reset",
+			Handler:    _EmisService_Reset_Handler,
+		},
 		{
 			MethodName: "GetEmision",
 			Handler:    _EmisService_GetEmision_Handler,
@@ -172,6 +343,18 @@ var EmisService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteEmision",
 			Handler:    _EmisService_DeleteEmision_Handler,
+		},
+		{
+			MethodName: "GetRecibo",
+			Handler:    _EmisService_GetRecibo_Handler,
+		},
+		{
+			MethodName: "AddRecibo",
+			Handler:    _EmisService_AddRecibo_Handler,
+		},
+		{
+			MethodName: "DeleteRecibo",
+			Handler:    _EmisService_DeleteRecibo_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

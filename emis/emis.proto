@@ -1,22 +1,50 @@
 syntax = "proto3";
 
-package emis;
-// option go_package = "./emis";
+//package emis;
+option go_package = "./emis";
 
+import "google/protobuf/empty.proto";
 
 message Emision {
-  string codigo = 1;
-  string organismo = 2;
-  int32  total = 3;
+  string  codigo = 1;
+  string  organismo = 2;
+  int32   total_documentos = 3;
+  string  descripcion = 4;
+  bool    firmar = 5;
+  bool    sello_tiempo = 6;
+  bool    notificar = 7;
+  string  status = 8;
+  int32   tamanio_bloque = 9;
+}
+
+message Recibo {
+  string cod_emision    = 1;
+	int32   num_orden     = 2 ;
+	string  nombre        = 3 ;
+	string  apellidos     = 4 ;
+	string  concepto      = 5 ;
+	int32   importe       = 6 ;
+	string  email         = 7 ;
+	string  telefono      = 8 ;
+	string  observaciones = 9 ;
+	string  pdf           = 10 ;
+	int32   tamanio       = 11;
 }
 
 service EmisService {
   
   // Definimos endpoints
-  rpc GetEmision(GetEmisionRequest) returns (GetEmisionResponse);
-  rpc AddEmision(AddEmisionRequest) returns (AddEmisionResponse);
+  rpc Ping(google.protobuf.Empty)         returns (google.protobuf.Empty);
+  rpc Reset(google.protobuf.Empty)        returns (google.protobuf.Empty);
+ 
+  rpc GetEmision(GetEmisionRequest)       returns (GetEmisionResponse);
+  rpc AddEmision(AddEmisionRequest)       returns (AddEmisionResponse);
   rpc DeleteEmision(DeleteEmisionRequest) returns (DeleteEmisionResponse);
 
+  // Recibos
+  rpc GetRecibo(GetReciboRequest)         returns (GetReciboResponse);
+  rpc AddRecibo(AddReciboRequest)         returns (AddReciboResponse);
+  rpc DeleteRecibo(DeleteReciboRequest)   returns (DeleteReciboResponse);
 }
 
 // -- Get Emision Tipos de Mensajes --
@@ -50,4 +78,45 @@ message DeleteEmisionRequest {
 message DeleteEmisionResponse {
 // tipo   nombre    posicion
   string status = 1;
+  int32 total = 2  ;
+}
+
+// ==================
+// Recibos
+// ==================
+// -- Get Recibo Tipos de Mensajes --
+message GetReciboRequest {
+  // tipo nombre posicion
+  string  codigo_emision  = 1;
+  int32   numero_orden    = 2;
+  bool    incluir_pdf     = 3;
+}
+
+message GetReciboResponse {
+// tipo   nombre    posicion
+  Recibo recibo = 1;
+}
+
+// -- Add Recibo Tipos de Mensajes --
+message AddReciboRequest {
+  // tipo nombre posicion
+  Recibo  recibo  = 1;
+}
+
+message AddReciboResponse {
+// tipo   nombre    posicion
+  Recibo  recibo  = 1;
+}
+
+// -- Delete Recibo Tipos de Mensajes --
+message DeleteReciboRequest {
+  // tipo nombre posicion
+  string  codigo_emision  = 1;
+  int32   numero_orden    = 2;
+}
+
+message DeleteReciboResponse {
+// tipo   nombre    posicion
+  string  status  = 1 ;
+  int32   total   = 2 ;
 }
