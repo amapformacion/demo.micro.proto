@@ -34,17 +34,21 @@ message Recibo {
 service EmisService {
   
   // Definimos endpoints
-  rpc Ping(google.protobuf.Empty)         returns (google.protobuf.Empty);
-  rpc Reset(google.protobuf.Empty)        returns (google.protobuf.Empty);
- 
-  rpc GetEmision(GetEmisionRequest)       returns (GetEmisionResponse);
-  rpc AddEmision(AddEmisionRequest)       returns (AddEmisionResponse);
-  rpc DeleteEmision(DeleteEmisionRequest) returns (DeleteEmisionResponse);
+  rpc Ping(google.protobuf.Empty)               returns (google.protobuf.Empty);
+  rpc Reset(google.protobuf.Empty)              returns (google.protobuf.Empty);
 
-  // Recibos
-  rpc GetRecibo(GetReciboRequest)         returns (GetReciboResponse);
-  rpc AddRecibo(AddReciboRequest)         returns (AddReciboResponse);
-  rpc DeleteRecibo(DeleteReciboRequest)   returns (DeleteReciboResponse);
+  rpc GetEmision(GetEmisionRequest)             returns (GetEmisionResponse);
+  rpc AddEmision(AddEmisionRequest)             returns (AddEmisionResponse);
+  rpc DeleteEmision(DeleteEmisionRequest)       returns (DeleteEmisionResponse);
+  rpc FakeEmision(FakeEmisionRequest)           returns (FakeEmisionResponse);
+  rpc InitEmision(InitEmisionRequest)           returns (InitEmisionResponse);
+
+  // Recibos      
+  rpc GetRecibo(GetReciboRequest)               returns (GetReciboResponse);
+  rpc GetRecibos(GetRecibosRequest)             returns (GetRecibosResponse);
+  rpc AddRecibo(AddReciboRequest)               returns (AddReciboResponse);
+  rpc DeleteRecibo(DeleteReciboRequest)         returns (DeleteReciboResponse);
+  rpc UpdatePdfRecibo(UpdatePdfReciboRequest)   returns (UpdatePdfReciboResponse);
 }
 
 // -- Get Emision Tipos de Mensajes --
@@ -81,6 +85,29 @@ message DeleteEmisionResponse {
   int32 total = 2  ;
 }
 
+// -- Fake Emision Tipos de Mensajes --
+message FakeEmisionRequest {
+  // tipo nombre posicion
+  string codigo = 1;
+}
+
+message FakeEmisionResponse {
+// tipo   nombre    posicion
+
+  // Total de documentos procesados.
+  int32 total = 1  ;
+}
+
+// -- Init Emision Tipos de Mensajes --
+message InitEmisionRequest {
+  // tipo nombre posicion
+  string codigo = 1;
+}
+
+message InitEmisionResponse {
+// tipo   nombre    posicion  
+}
+
 // ==================
 // Recibos
 // ==================
@@ -95,6 +122,17 @@ message GetReciboRequest {
 message GetReciboResponse {
 // tipo   nombre    posicion
   Recibo recibo = 1;
+}
+
+message GetRecibosRequest {
+  // tipo nombre posicion
+  string  codigo_emision  = 1;
+  int32   bloque          = 2;
+}
+
+message GetRecibosResponse {
+// tipo   nombre    posicion
+  repeated Recibo recibos = 1;
 }
 
 // -- Add Recibo Tipos de Mensajes --
@@ -119,4 +157,17 @@ message DeleteReciboResponse {
 // tipo   nombre    posicion
   string  status  = 1 ;
   int32   total   = 2 ;
+}
+
+// -- UpdatePdf Recibo Tipos de Mensajes --
+message UpdatePdfReciboRequest {
+  // tipo nombre posicion
+  string  codigo_emision  = 1;
+  int32   numero_orden    = 2;
+  string  pdf          = 3;
+}
+
+message UpdatePdfReciboResponse {
+// tipo   nombre    posicion
+  int32   tamanio = 1 ;
 }

@@ -29,10 +29,14 @@ type EmisServiceClient interface {
 	GetEmision(ctx context.Context, in *GetEmisionRequest, opts ...grpc.CallOption) (*GetEmisionResponse, error)
 	AddEmision(ctx context.Context, in *AddEmisionRequest, opts ...grpc.CallOption) (*AddEmisionResponse, error)
 	DeleteEmision(ctx context.Context, in *DeleteEmisionRequest, opts ...grpc.CallOption) (*DeleteEmisionResponse, error)
+	FakeEmision(ctx context.Context, in *FakeEmisionRequest, opts ...grpc.CallOption) (*FakeEmisionResponse, error)
+	InitEmision(ctx context.Context, in *InitEmisionRequest, opts ...grpc.CallOption) (*InitEmisionResponse, error)
 	// Recibos
 	GetRecibo(ctx context.Context, in *GetReciboRequest, opts ...grpc.CallOption) (*GetReciboResponse, error)
+	GetRecibos(ctx context.Context, in *GetRecibosRequest, opts ...grpc.CallOption) (*GetRecibosResponse, error)
 	AddRecibo(ctx context.Context, in *AddReciboRequest, opts ...grpc.CallOption) (*AddReciboResponse, error)
 	DeleteRecibo(ctx context.Context, in *DeleteReciboRequest, opts ...grpc.CallOption) (*DeleteReciboResponse, error)
+	UpdatePdfRecibo(ctx context.Context, in *UpdatePdfReciboRequest, opts ...grpc.CallOption) (*UpdatePdfReciboResponse, error)
 }
 
 type emisServiceClient struct {
@@ -88,9 +92,36 @@ func (c *emisServiceClient) DeleteEmision(ctx context.Context, in *DeleteEmision
 	return out, nil
 }
 
+func (c *emisServiceClient) FakeEmision(ctx context.Context, in *FakeEmisionRequest, opts ...grpc.CallOption) (*FakeEmisionResponse, error) {
+	out := new(FakeEmisionResponse)
+	err := c.cc.Invoke(ctx, "/EmisService/FakeEmision", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *emisServiceClient) InitEmision(ctx context.Context, in *InitEmisionRequest, opts ...grpc.CallOption) (*InitEmisionResponse, error) {
+	out := new(InitEmisionResponse)
+	err := c.cc.Invoke(ctx, "/EmisService/InitEmision", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *emisServiceClient) GetRecibo(ctx context.Context, in *GetReciboRequest, opts ...grpc.CallOption) (*GetReciboResponse, error) {
 	out := new(GetReciboResponse)
 	err := c.cc.Invoke(ctx, "/EmisService/GetRecibo", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *emisServiceClient) GetRecibos(ctx context.Context, in *GetRecibosRequest, opts ...grpc.CallOption) (*GetRecibosResponse, error) {
+	out := new(GetRecibosResponse)
+	err := c.cc.Invoke(ctx, "/EmisService/GetRecibos", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -115,6 +146,15 @@ func (c *emisServiceClient) DeleteRecibo(ctx context.Context, in *DeleteReciboRe
 	return out, nil
 }
 
+func (c *emisServiceClient) UpdatePdfRecibo(ctx context.Context, in *UpdatePdfReciboRequest, opts ...grpc.CallOption) (*UpdatePdfReciboResponse, error) {
+	out := new(UpdatePdfReciboResponse)
+	err := c.cc.Invoke(ctx, "/EmisService/UpdatePdfRecibo", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // EmisServiceServer is the server API for EmisService service.
 // All implementations must embed UnimplementedEmisServiceServer
 // for forward compatibility
@@ -125,10 +165,14 @@ type EmisServiceServer interface {
 	GetEmision(context.Context, *GetEmisionRequest) (*GetEmisionResponse, error)
 	AddEmision(context.Context, *AddEmisionRequest) (*AddEmisionResponse, error)
 	DeleteEmision(context.Context, *DeleteEmisionRequest) (*DeleteEmisionResponse, error)
+	FakeEmision(context.Context, *FakeEmisionRequest) (*FakeEmisionResponse, error)
+	InitEmision(context.Context, *InitEmisionRequest) (*InitEmisionResponse, error)
 	// Recibos
 	GetRecibo(context.Context, *GetReciboRequest) (*GetReciboResponse, error)
+	GetRecibos(context.Context, *GetRecibosRequest) (*GetRecibosResponse, error)
 	AddRecibo(context.Context, *AddReciboRequest) (*AddReciboResponse, error)
 	DeleteRecibo(context.Context, *DeleteReciboRequest) (*DeleteReciboResponse, error)
+	UpdatePdfRecibo(context.Context, *UpdatePdfReciboRequest) (*UpdatePdfReciboResponse, error)
 	mustEmbedUnimplementedEmisServiceServer()
 }
 
@@ -151,14 +195,26 @@ func (UnimplementedEmisServiceServer) AddEmision(context.Context, *AddEmisionReq
 func (UnimplementedEmisServiceServer) DeleteEmision(context.Context, *DeleteEmisionRequest) (*DeleteEmisionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteEmision not implemented")
 }
+func (UnimplementedEmisServiceServer) FakeEmision(context.Context, *FakeEmisionRequest) (*FakeEmisionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FakeEmision not implemented")
+}
+func (UnimplementedEmisServiceServer) InitEmision(context.Context, *InitEmisionRequest) (*InitEmisionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method InitEmision not implemented")
+}
 func (UnimplementedEmisServiceServer) GetRecibo(context.Context, *GetReciboRequest) (*GetReciboResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetRecibo not implemented")
+}
+func (UnimplementedEmisServiceServer) GetRecibos(context.Context, *GetRecibosRequest) (*GetRecibosResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetRecibos not implemented")
 }
 func (UnimplementedEmisServiceServer) AddRecibo(context.Context, *AddReciboRequest) (*AddReciboResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddRecibo not implemented")
 }
 func (UnimplementedEmisServiceServer) DeleteRecibo(context.Context, *DeleteReciboRequest) (*DeleteReciboResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteRecibo not implemented")
+}
+func (UnimplementedEmisServiceServer) UpdatePdfRecibo(context.Context, *UpdatePdfReciboRequest) (*UpdatePdfReciboResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdatePdfRecibo not implemented")
 }
 func (UnimplementedEmisServiceServer) mustEmbedUnimplementedEmisServiceServer() {}
 
@@ -263,6 +319,42 @@ func _EmisService_DeleteEmision_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _EmisService_FakeEmision_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FakeEmisionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EmisServiceServer).FakeEmision(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/EmisService/FakeEmision",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EmisServiceServer).FakeEmision(ctx, req.(*FakeEmisionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _EmisService_InitEmision_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(InitEmisionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EmisServiceServer).InitEmision(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/EmisService/InitEmision",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EmisServiceServer).InitEmision(ctx, req.(*InitEmisionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _EmisService_GetRecibo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetReciboRequest)
 	if err := dec(in); err != nil {
@@ -277,6 +369,24 @@ func _EmisService_GetRecibo_Handler(srv interface{}, ctx context.Context, dec fu
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(EmisServiceServer).GetRecibo(ctx, req.(*GetReciboRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _EmisService_GetRecibos_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRecibosRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EmisServiceServer).GetRecibos(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/EmisService/GetRecibos",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EmisServiceServer).GetRecibos(ctx, req.(*GetRecibosRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -317,6 +427,24 @@ func _EmisService_DeleteRecibo_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _EmisService_UpdatePdfRecibo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdatePdfReciboRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EmisServiceServer).UpdatePdfRecibo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/EmisService/UpdatePdfRecibo",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EmisServiceServer).UpdatePdfRecibo(ctx, req.(*UpdatePdfReciboRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // EmisService_ServiceDesc is the grpc.ServiceDesc for EmisService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -345,8 +473,20 @@ var EmisService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _EmisService_DeleteEmision_Handler,
 		},
 		{
+			MethodName: "FakeEmision",
+			Handler:    _EmisService_FakeEmision_Handler,
+		},
+		{
+			MethodName: "InitEmision",
+			Handler:    _EmisService_InitEmision_Handler,
+		},
+		{
 			MethodName: "GetRecibo",
 			Handler:    _EmisService_GetRecibo_Handler,
+		},
+		{
+			MethodName: "GetRecibos",
+			Handler:    _EmisService_GetRecibos_Handler,
 		},
 		{
 			MethodName: "AddRecibo",
@@ -355,6 +495,10 @@ var EmisService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteRecibo",
 			Handler:    _EmisService_DeleteRecibo_Handler,
+		},
+		{
+			MethodName: "UpdatePdfRecibo",
+			Handler:    _EmisService_UpdatePdfRecibo_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
