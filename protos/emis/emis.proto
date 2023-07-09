@@ -3,6 +3,8 @@ syntax = "proto3";
 //package emis;
 option go_package = "./emis";
 
+//package emis;
+
 import "google/protobuf/empty.proto";
 
 message Emision {
@@ -37,7 +39,8 @@ service EmisService {
   rpc Ping(google.protobuf.Empty)               returns (google.protobuf.Empty);
   rpc Reset(google.protobuf.Empty)              returns (google.protobuf.Empty);
 
-  rpc GetEmision(GetEmisionRequest)             returns (GetEmisionResponse);
+  rpc GetEmision(GetEmisionRequest)             returns (GetEmisionResponse);  
+  rpc GetEmisiones(GetEmisionesRequest)         returns (GetEmisionesResponse);  
   rpc AddEmision(AddEmisionRequest)             returns (AddEmisionResponse);
   rpc DeleteEmision(DeleteEmisionRequest)       returns (DeleteEmisionResponse);
   rpc FakeEmision(FakeEmisionRequest)           returns (FakeEmisionResponse);
@@ -60,6 +63,16 @@ message GetEmisionRequest {
 message GetEmisionResponse {
 // tipo   nombre    posicion
   Emision emision = 1;
+}
+
+// -- Get Emisiones Tipos de Mensajes --
+message GetEmisionesRequest {
+
+}
+
+message GetEmisionesResponse {
+// tipo   nombre    posicion
+  repeated Emision emisiones = 1;
 }
 
 // -- Add Emision Tipos de Mensajes --

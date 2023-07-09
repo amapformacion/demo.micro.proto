@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v4.23.3
-// source: emis/emis.proto
+// source: protos/emis/emis.proto
 
 package emis
 
@@ -27,6 +27,7 @@ type EmisServiceClient interface {
 	Ping(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	Reset(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	GetEmision(ctx context.Context, in *GetEmisionRequest, opts ...grpc.CallOption) (*GetEmisionResponse, error)
+	GetEmisiones(ctx context.Context, in *GetEmisionesRequest, opts ...grpc.CallOption) (*GetEmisionesResponse, error)
 	AddEmision(ctx context.Context, in *AddEmisionRequest, opts ...grpc.CallOption) (*AddEmisionResponse, error)
 	DeleteEmision(ctx context.Context, in *DeleteEmisionRequest, opts ...grpc.CallOption) (*DeleteEmisionResponse, error)
 	FakeEmision(ctx context.Context, in *FakeEmisionRequest, opts ...grpc.CallOption) (*FakeEmisionResponse, error)
@@ -68,6 +69,15 @@ func (c *emisServiceClient) Reset(ctx context.Context, in *emptypb.Empty, opts .
 func (c *emisServiceClient) GetEmision(ctx context.Context, in *GetEmisionRequest, opts ...grpc.CallOption) (*GetEmisionResponse, error) {
 	out := new(GetEmisionResponse)
 	err := c.cc.Invoke(ctx, "/EmisService/GetEmision", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *emisServiceClient) GetEmisiones(ctx context.Context, in *GetEmisionesRequest, opts ...grpc.CallOption) (*GetEmisionesResponse, error) {
+	out := new(GetEmisionesResponse)
+	err := c.cc.Invoke(ctx, "/EmisService/GetEmisiones", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -163,6 +173,7 @@ type EmisServiceServer interface {
 	Ping(context.Context, *emptypb.Empty) (*emptypb.Empty, error)
 	Reset(context.Context, *emptypb.Empty) (*emptypb.Empty, error)
 	GetEmision(context.Context, *GetEmisionRequest) (*GetEmisionResponse, error)
+	GetEmisiones(context.Context, *GetEmisionesRequest) (*GetEmisionesResponse, error)
 	AddEmision(context.Context, *AddEmisionRequest) (*AddEmisionResponse, error)
 	DeleteEmision(context.Context, *DeleteEmisionRequest) (*DeleteEmisionResponse, error)
 	FakeEmision(context.Context, *FakeEmisionRequest) (*FakeEmisionResponse, error)
@@ -188,6 +199,9 @@ func (UnimplementedEmisServiceServer) Reset(context.Context, *emptypb.Empty) (*e
 }
 func (UnimplementedEmisServiceServer) GetEmision(context.Context, *GetEmisionRequest) (*GetEmisionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetEmision not implemented")
+}
+func (UnimplementedEmisServiceServer) GetEmisiones(context.Context, *GetEmisionesRequest) (*GetEmisionesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetEmisiones not implemented")
 }
 func (UnimplementedEmisServiceServer) AddEmision(context.Context, *AddEmisionRequest) (*AddEmisionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddEmision not implemented")
@@ -279,6 +293,24 @@ func _EmisService_GetEmision_Handler(srv interface{}, ctx context.Context, dec f
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(EmisServiceServer).GetEmision(ctx, req.(*GetEmisionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _EmisService_GetEmisiones_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetEmisionesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EmisServiceServer).GetEmisiones(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/EmisService/GetEmisiones",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EmisServiceServer).GetEmisiones(ctx, req.(*GetEmisionesRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -465,6 +497,10 @@ var EmisService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _EmisService_GetEmision_Handler,
 		},
 		{
+			MethodName: "GetEmisiones",
+			Handler:    _EmisService_GetEmisiones_Handler,
+		},
+		{
 			MethodName: "AddEmision",
 			Handler:    _EmisService_AddEmision_Handler,
 		},
@@ -502,5 +538,5 @@ var EmisService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "emis/emis.proto",
+	Metadata: "protos/emis/emis.proto",
 }
