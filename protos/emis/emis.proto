@@ -36,7 +36,7 @@ message Recibo {
 service EmisService {
   
   // Definimos endpoints
-  rpc Ping(google.protobuf.Empty)               returns (google.protobuf.Empty);
+  rpc Ping(PingRequest)                         returns (PingResponse);
   rpc Reset(google.protobuf.Empty)              returns (google.protobuf.Empty);
 
   rpc GetEmision(GetEmisionRequest)             returns (GetEmisionResponse);  
@@ -52,6 +52,16 @@ service EmisService {
   rpc AddRecibo(AddReciboRequest)               returns (AddReciboResponse);
   rpc DeleteRecibo(DeleteReciboRequest)         returns (DeleteReciboResponse);
   rpc UpdatePdfRecibo(UpdatePdfReciboRequest)   returns (UpdatePdfReciboResponse);
+}
+
+// -- Ping  Tipos de Mensajes --
+message PingRequest {
+  string msg = 1;
+}
+
+message PingResponse {
+// tipo   nombre    posicion
+  string reply = 1;
 }
 
 // -- Get Emision Tipos de Mensajes --
